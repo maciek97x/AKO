@@ -26,7 +26,7 @@ int main()
 
 	__int64 wartosc_max;
 	wartosc_max = szukaj64_max(wyniki, 12);
-	
+
 	printf("\nNajwiekszy element tablicy wynosi %I64d\n", wartosc_max);
 	return 0;
 }

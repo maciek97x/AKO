@@ -26,11 +26,11 @@ ptl:
 								; od dotychczas znalezionego
 	mov		rax, [rbx+rsi*8]
 dalej:
-	loop ptl					; organizacja petli
+	loop	ptl					; organizacja petli
 								; obliczona wartosc maksymalna pozostaje w rejestrze RAX
 								; i bedzie wykorzystana przez kod programu napisany w jezyku C
-	pop rsi
-	pop rbx
+	pop		rsi
+	pop		rbx
 	ret
 szukaj64_max ENDP
 END
