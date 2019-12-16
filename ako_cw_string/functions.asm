@@ -7,6 +7,8 @@ extern _malloc : PROC
 
 public _read_int32
 public _print_int32
+public _print_str
+public _print_chr
 public _int32_to_str
 public _printf_asm
 
@@ -95,6 +97,51 @@ dziel:
 	ret
 _print_int32 ENDP
 
+_print_str PROC
+	push	ebp
+	mov		ebp, esp
+	push	edi
+	push	esi
+
+	mov		esi, [ebp+8]
+	mov		edi, esi
+
+licz_znaki:
+	mov		bl, [esi]
+	inc		esi
+	cmp		bl, 0
+	jne		licz_znaki
+	
+	mov		eax, esi
+	sub		eax, edi
+	push	eax
+	push	edi
+	push	dword PTR 1
+	call	__write
+	add		esp, 12
+
+	pop		esi
+	pop		edi
+	pop		ebp
+	ret
+_print_str ENDP
+
+_print_chr PROC
+	push	ebp
+	mov		ebp, esp
+	
+	mov		eax, ebp
+	add		eax, 8
+	push	dword PTR 1
+	push	eax
+	push	dword PTR 1
+	call	__write
+	add		esp, 12
+
+	pop		ebp
+	ret
+_print_chr ENDP
+
 _int32_to_str PROC
 	push	ebp
 	mov		ebp, esp
@@ -142,7 +189,6 @@ zapisuj:
 	pop		ebx
 	pop		edi
 	pop		esi
-
 	pop		ebp
 	ret
 _int32_to_str ENDP
@@ -150,7 +196,69 @@ _int32_to_str ENDP
 _printf_asm PROC
 	push	ebp
 	mov		ebp, esp
+	push	esi
+	push	edi
+	push	ebx
 
+	mov		esi, [ebp+8]
+	mov		edi, ebp
+	add		edi, 12
+
+ptl:
+	mov		bl, [esi]
+	cmp		bl, 25h						; 25h - ascii %
+	je		jest_procent
+	cmp		bl, 0
+	je		koniec
+	
+	push	dword PTR 1
+	push	esi
+	push	dword PTR 1
+	call	__write
+	add		esp, 12
+
+	inc		esi
+	jmp		ptl
+	
+jest_procent:
+	inc		esi
+	mov		bl, [esi]
+	cmp		bl, 64h						;64h - ascii d
+	je		liczba
+	cmp		bl, 73h						;73h - ascii s
+	je		string
+	cmp		bl, 63h						;63h - ascii c
+	je		char
+	jmp		ptl
+
+liczba:
+	push	[edi]
+	call	_print_int32
+	add		esp, 4
+	add		edi, 4
+	inc		esi
+	jmp		ptl
+
+string:
+	push	[edi]
+	call	_print_str
+	add		esp, 4
+	add		edi, 4
+	inc		esi
+	jmp		ptl
+
+char:
+	push	[edi]
+	call	_print_chr
+	add		esp, 4
+	add		edi, 4
+	inc		esi
+	jmp		ptl
+
+koniec:
+	pop		ebx
+	pop		edi
+	pop		esi
 	pop		ebp
 	ret
 _printf_asm ENDP

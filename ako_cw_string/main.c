@@ -8,11 +8,15 @@ void printf_asm(char* pattern, ... );
 
 int main()
 {
+	/*
 	__int32 n = 0xABAB;
 	char* s;
 	read_int32(&n);
 	print_int32(n);
 	s = int32_to_str(n);
 	printf("s=%s", s);
+	*/
+
+	printf_asm("liczba: %d \nstring: %s\nchar: %c\n", 1234, "abcd", 'a');
 	return 0;
 }
