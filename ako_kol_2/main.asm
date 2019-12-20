@@ -5,6 +5,11 @@ extern _ExitProcess@4 : PROC
 
 public _main
 
+.data
+
+linie	dd 421, 422, 443
+		dd 442, 444, 427, 432
+
 .code
 
 _main PROC
@@ -52,6 +57,21 @@ jest_zero:
 	jne		ptl
 	nop
 
+
+	mov		esi, (OFFSET linie)+4
+	mov		ebx, 4
+	mov		edx, [ebx] [esi]
+
+	mov		cl, 0
+	mov		ebx, 10
+ptl2:
+	cmp		eax, 0
+	je		koniec2
+	mov		edx, 0
+	div		ebx
+	add		cl, dl
+	jmp		ptl2
+koniec2:
 	push	0
 	call	_ExitProcess@4
 _main ENDP
