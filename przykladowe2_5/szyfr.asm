@@ -36,5 +36,6 @@ koniec:
 	pop		ebx
 	pop		esi
 	pop		ebp
+	ret
 _szyfruj endp
 end

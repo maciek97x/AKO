@@ -4,7 +4,7 @@ void szyfruj(char* tekst);
 
 int main()
 {
-	char* tekst = "abcdefgh";
+	char tekst[] = "abcdefgh";
 	printf("%s\n", tekst);
 	szyfruj(tekst);
 	printf("%s\n", tekst);
